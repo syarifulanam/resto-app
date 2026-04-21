@@ -1,0 +1,12 @@
+CREATE TABLE_users
+(
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL,
+    password    VARCHAR(255) NOT NULL,
+    email       VARCHAR(100) NOT NULL UNIQUE,
+    role        VARCHAR(20) NOT NULL,
+    status      VARCHAR(20) NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON CURRENT_TIMESTAMP,
+    deleted_at  TIMESTAMP
+);
