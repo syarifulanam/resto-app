@@ -23,8 +23,8 @@ public class UserService {
     public User registerUser(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRole(UserRole.CASHIER); // default role for registration
-        user.setStatus(UserStatus.INACTIVE); // default status
+        user.setRole(UserRole.STAFF); // default role for registration
+        user.setStatus(UserStatus.ACTIVE); // default status
         return userRepository.save(user);
     }
 }

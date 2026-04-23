@@ -74,13 +74,13 @@ public class ApiAuthController {
         // Check role
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         boolean isAuthorized = authorities.stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_" + UserRole.CASHIER.name()));
+                .anyMatch(a -> a.getAuthority().equals("ROLE_" + UserRole.STAFF.name()));
 
         if (!isAuthorized) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(ApiResponse.<LoginResponse>builder()
                             .status("error")
-                            .message("Access denied. Only Cashier can login here.")
+                            .message("Access denied. Only Staff can login here.")
                             .build());
         }
 
