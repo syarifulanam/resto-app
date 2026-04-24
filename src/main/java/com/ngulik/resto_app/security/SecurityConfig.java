@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().hasRole("CASHIER") // NOTE: Only CASHIER can access other APIs
+                        .anyRequest().hasAnyRole("CASHIER", "ADMIN", "OWNER", "STAFF") // NOTE: Only CASHIER, ADMIN, OWNER, STAFF can access other APIs
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
