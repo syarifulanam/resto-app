@@ -34,7 +34,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class ApiAuthController {
+public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
