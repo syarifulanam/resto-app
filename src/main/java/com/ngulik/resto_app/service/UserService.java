@@ -9,10 +9,15 @@ import com.ngulik.resto_app.mapper.UserMapper;
 import com.ngulik.resto_app.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -35,5 +40,11 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return userMapper.toUserProfileDto(user);
+    }
+
+    public Page<User> getAllUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> userPage = userRepository.findAll(pageable);
+        return userPage;
     }
 }

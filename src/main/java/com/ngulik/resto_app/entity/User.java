@@ -1,5 +1,6 @@
 package com.ngulik.resto_app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ngulik.resto_app.enums.UserRole;
 import com.ngulik.resto_app.enums.UserStatus;
 import jakarta.persistence.*;
@@ -26,6 +27,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
