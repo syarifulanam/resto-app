@@ -42,11 +42,15 @@ public class UserService {
         return userMapper.toUserProfileDto(user);
     }
 
-    public Page<User> getAllUsers(int page, int size, String name) {
+    public Page<User> getAllUsers(int page, int size, String name, String email) {
         Pageable pageable = PageRequest.of(page, size);
 
         if (name != null && !name.isEmpty()) {
             return userRepository.findByNameContainingIgnoreCase(name, pageable);
+        }
+
+        if (email != null && !email.isEmpty()) {
+            return userRepository.findByEmailContainingIgnoreCase(email, pageable);
         }
 
         return userRepository.findAll(pageable);
