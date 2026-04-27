@@ -42,7 +42,7 @@ public class UserService {
         return userMapper.toUserProfileDto(user);
     }
 
-    public Page<User> getAllUsers(int page, int size, String name, String email) {
+    public Page<User> getAllUsers(int page, int size, String name, String email, UserRole role) {
         Pageable pageable = PageRequest.of(page, size);
 
         if (name != null && !name.isEmpty()) {
@@ -51,6 +51,10 @@ public class UserService {
 
         if (email != null && !email.isEmpty()) {
             return userRepository.findByEmailContainingIgnoreCase(email, pageable);
+        }
+
+        if (role != null) {
+            return userRepository.findByRole(role, pageable);
         }
 
         return userRepository.findAll(pageable);

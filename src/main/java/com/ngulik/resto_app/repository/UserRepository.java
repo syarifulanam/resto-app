@@ -21,6 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findByEmailContainingIgnoreCase(String email, Pageable pageable);
 
+    Page<User> findByRole(UserRole role, Pageable pageable);
+
     @Query("SELECT u FROM User u WHERE " +
             "(:name IS NULL OR LOWER(u.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
             "(:email IS NULL OR LOWER(u.email) LIKE LOWER(CONCAT('%', :email, '%'))) AND " +
