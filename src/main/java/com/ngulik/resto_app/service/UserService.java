@@ -42,9 +42,13 @@ public class UserService {
         return userMapper.toUserProfileDto(user);
     }
 
-    public Page<User> getAllUsers(int page, int size) {
+    public Page<User> getAllUsers(int page, int size, String name) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<User> userPage = userRepository.findAll(pageable);
-        return userPage;
+
+        if (name != null && !name.isEmpty()) {
+            return userRepository.findByNameContainingIgnoreCase(name, pageable);
+        }
+
+        return userRepository.findAll(pageable);
     }
 }
