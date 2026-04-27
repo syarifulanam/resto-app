@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,19 @@ public class UserService {
         return userMapper.toUserProfileDto(user);
     }
 
-    public Page<User> getAllUsers(int page, int size, String name, String email, UserRole role) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<User> getAllUsers(int page, int size, String name, String email, UserRole role, UserStatus status, String sortDir, String sortBy) {
+        // Validasi sortBy (hanya kolom yang diizinkan)
+        String validSortBy = validateSortBy(sortBy);
+
+        // Tentukan arah sorting
+        Sort.Direction direction = sortDir.equalsIgnoreCase("DESC") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
+
+        // Buat sorting
+        Sort sort = Sort.by(direction, validSortBy);
+
+        // Buat Pageable dengan sorting
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         if (name != null && !name.isEmpty()) {
             return userRepository.findByNameContainingIgnoreCase(name, pageable);
@@ -57,6 +69,29 @@ public class UserService {
             return userRepository.findByRole(role, pageable);
         }
 
+        if (status != null) {
+            return userRepository.findByStatus(status, pageable);
+        }
+
         return userRepository.findAll(pageable);
+    }
+
+    // Tambahkan method validasi
+    private String validateSortBy(String sortBy) {
+        if (sortBy == null || sortBy.isEmpty()) {
+            return "id";
+        }
+
+        // Hanya izinkan kolom-kolom ini
+        switch (sortBy.toLowerCase()) {
+            case "id":
+                return "id";
+            case "name":
+                return "name";
+            case "email":
+                return "email";
+            default:
+                return "id"; // Default jika kolom tidak dikenal
+        }
     }
 }

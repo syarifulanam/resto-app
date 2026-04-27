@@ -1,6 +1,7 @@
 package com.ngulik.resto_app.controller;
 
 import com.ngulik.resto_app.enums.UserRole;
+import com.ngulik.resto_app.enums.UserStatus;
 import com.ngulik.resto_app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,11 @@ public class UserController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false)UserRole role
+            @RequestParam(required = false) UserRole role,
+            @RequestParam(required = false) UserStatus status,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDir
             ) {
-        return ResponseEntity.ok(userService.getAllUsers(page, size, name, email, role));
+        return ResponseEntity.ok(userService.getAllUsers(page, size, name, email, role, status, sortBy, sortDir));
     }
 }
