@@ -5,10 +5,14 @@ import com.ngulik.resto_app.enums.UserStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
+@Builder
+@AllArgsConstructor
 @Getter
 public class UserDto {
     private Long id;

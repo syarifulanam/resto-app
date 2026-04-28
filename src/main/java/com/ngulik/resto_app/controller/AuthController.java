@@ -34,7 +34,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class ApiAuthController {
+public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
@@ -47,10 +47,16 @@ public class ApiAuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<RegisterResponse>> register(@Valid @RequestBody RegisterRequest request) {
-        UserDto userDto = new UserDto();
-        userDto.setName(request.getName());
-        userDto.setEmail(request.getEmail());
-        userDto.setPassword(request.getPassword());
+//        UserDto userDto = new UserDto();
+//        userDto.setName(request.getName());
+//        userDto.setEmail(request.getEmail());
+//        userDto.setPassword(request.getPassword());
+
+        UserDto userDto = UserDto.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .build();
 
         User registeredUser = userService.registerUser(userDto);
 
@@ -60,6 +66,12 @@ public class ApiAuthController {
                 .email(registeredUser.getEmail())
                 .role(registeredUser.getRole())
                 .build();
+
+//        RegisterResponse responseData = new RegisterResponse();
+//        responseData.setId(registeredUser.getId());
+//        responseData.setName(registeredUser.getName());
+//        responseData.setEmail(registeredUser.getEmail());
+//        responseData.setRole(registeredUser.getRole());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success("User registered successfully", responseData));
@@ -78,10 +90,7 @@ public class ApiAuthController {
 
         if (!isAuthorized) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(ApiResponse.<LoginResponse>builder()
-                            .status("error")
-                            .message("Access denied. Only Staff can login here.")
-                            .build());
+                    .body(ApiResponse.error("Access Denied"));
         }
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
