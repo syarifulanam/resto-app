@@ -57,23 +57,9 @@ public class UserService {
         // Buat Pageable dengan sorting
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        if (name != null && !name.isEmpty()) {
-            return userRepository.findByNameContainingIgnoreCase(name, pageable);
-        }
+        log.info("Searching users - name: {}, email: {}, role: {}, status: {}", name, email, role, status);
 
-        if (email != null && !email.isEmpty()) {
-            return userRepository.findByEmailContainingIgnoreCase(email, pageable);
-        }
-
-        if (role != null) {
-            return userRepository.findByRole(role, pageable);
-        }
-
-        if (status != null) {
-            return userRepository.findByStatus(status, pageable);
-        }
-
-        return userRepository.findAll(pageable);
+        return userRepository.search(name, email, role, status, pageable);
     }
 
     // Tambahkan method validasi
