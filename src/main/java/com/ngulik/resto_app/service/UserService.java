@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -44,7 +43,7 @@ public class UserService {
         return userMapper.toUserProfileDto(user);
     }
 
-    public Page<User> getAllUsers(int page, int size, String name, String email, UserRole role, UserStatus status, String sortDir, String sortBy) {
+    public Page<User> getAllUsers(int page, int size, String name, String email, UserRole role, UserStatus status, String sortBy, String sortDir) {
         // Validasi sortBy (hanya kolom yang diizinkan)
         String validSortBy = validateSortBy(sortBy);
 
@@ -107,4 +106,32 @@ public class UserService {
                 .status(savedUser.getStatus())
                 .build();
     }
-}
+
+    public UserDto getUserById(Long id) {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+            return UserDto.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .role(user.getRole())
+                    .status(user.getStatus())
+                    .build();
+        }
+
+        public UserDto getUserByEmail(String email) {
+        log.info("Fetching user with email: {}", email);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .status(user.getStatus())
+                .build();
+        }
+    }

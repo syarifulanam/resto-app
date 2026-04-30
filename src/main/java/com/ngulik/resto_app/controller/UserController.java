@@ -34,10 +34,23 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<UserDto>> createUser(@Valid @RequestBody UserDto userDto) {
-//        userDto.setId(null);
         UserDto newUser = userService.createUser(userDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success("User created successfully", newUser));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable Long id) {
+        UserDto user = userService.getUserById(id);
+
+        return ResponseEntity.ok(ApiResponse.success("User found successfully", user));
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<ApiResponse<UserDto>> getUserByEmail(@RequestParam String email) {
+        UserDto user = userService.getUserByEmail(email);
+
+        return ResponseEntity.ok(ApiResponse.success("User found successfully", user));
     }
 }
