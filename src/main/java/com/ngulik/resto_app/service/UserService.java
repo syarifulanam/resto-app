@@ -8,6 +8,7 @@ import com.ngulik.resto_app.enums.UserStatus;
 import com.ngulik.resto_app.mapper.UserMapper;
 import com.ngulik.resto_app.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -79,5 +80,31 @@ public class UserService {
             default:
                 return "id"; // Default jika kolom tidak dikenal
         }
+    }
+
+    public UserDto createUser(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        // Convert to Entity
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRole(userDto.getRole());
+        user.setStatus(userDto.getStatus());
+
+        // Save
+        User savedUser = userRepository.save(user);
+
+        // Return DTO
+        return UserDto.builder()
+                .id(savedUser.getId())
+                .name(savedUser.getName())
+                .email(savedUser.getEmail())
+                .role(savedUser.getRole())
+                .status(savedUser.getStatus())
+                .build();
     }
 }
