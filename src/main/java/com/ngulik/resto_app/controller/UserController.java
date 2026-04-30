@@ -47,7 +47,7 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("User found successfully", user));
     }
 
-    @GetMapping("/email")
+    @GetMapping("/by-email")
     public ResponseEntity<ApiResponse<UserDto>> getUserByEmail(@RequestParam String email) {
         UserDto user = userService.getUserByEmail(email);
 

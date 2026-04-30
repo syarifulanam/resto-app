@@ -108,19 +108,19 @@ public class UserService {
     }
 
     public UserDto getUserById(Long id) {
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-            return UserDto.builder()
-                    .id(user.getId())
-                    .name(user.getName())
-                    .email(user.getEmail())
-                    .role(user.getRole())
-                    .status(user.getStatus())
-                    .build();
-        }
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .status(user.getStatus())
+                .build();
+    }
 
-        public UserDto getUserByEmail(String email) {
+    public UserDto getUserByEmail(String email) {
         log.info("Fetching user with email: {}", email);
 
         User user = userRepository.findByEmail(email)
@@ -133,5 +133,5 @@ public class UserService {
                 .role(user.getRole())
                 .status(user.getStatus())
                 .build();
-        }
     }
+}
