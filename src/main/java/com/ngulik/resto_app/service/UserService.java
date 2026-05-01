@@ -2,6 +2,7 @@ package com.ngulik.resto_app.service;
 
 import com.ngulik.resto_app.dto.UserDto;
 import com.ngulik.resto_app.dto.UserProfileDto;
+import com.ngulik.resto_app.dto.UserUpdateDto;
 import com.ngulik.resto_app.entity.User;
 import com.ngulik.resto_app.enums.UserRole;
 import com.ngulik.resto_app.enums.UserStatus;
@@ -132,6 +133,39 @@ public class UserService {
                 .email(user.getEmail())
                 .role(user.getRole())
                 .status(user.getStatus())
+                .build();
+    }
+
+    public UserDto updateUser(Long id, UserUpdateDto updateRequest) {
+        log.info("Updating user with id: {}", id);
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        // Cek email duplikat (Jika email berubah)
+        if (!user.getEmail().equals(updateRequest.getEmail())) {
+            if (userRepository.existsByEmail(updateRequest.getEmail())) {
+                throw new RuntimeException("Email " + updateRequest.getEmail() + " already exists");
+            }
+            user.setEmail(updateRequest.getEmail());
+        }
+
+        // Update field yang diizinkan
+        user.setName(updateRequest.getName());
+
+        if (updateRequest.getStatus() != null) {
+            user.setStatus(updateRequest.getStatus());
+        }
+
+        // Password dan ROLE tidak diupdate
+        User savedUser = userRepository.save(user);
+
+        return UserDto.builder()
+                .id(savedUser.getId())
+                .name(savedUser.getName())
+                .email(savedUser.getEmail())
+                .role(savedUser.getRole())
+                .status(savedUser.getStatus())
                 .build();
     }
 }

@@ -2,9 +2,7 @@ package com.ngulik.resto_app.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import com.ngulik.resto_app.dto.UserDto;
 import lombok.*;
-import org.springframework.http.ResponseEntity;
 
 @Setter
 @Getter
