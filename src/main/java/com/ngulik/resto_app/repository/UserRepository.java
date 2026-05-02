@@ -17,6 +17,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
+    Optional<User> findById(Long id);
+
     Page<User> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
     Page<User> findByEmailContainingIgnoreCase(String email, Pageable pageable);
@@ -24,6 +26,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findByRole(UserRole role, Pageable pageable);
 
     Page<User> findByStatus(UserStatus status, Pageable pageable);
+
+    boolean existsByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE " +
             "(:name IS NULL OR LOWER(u.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +

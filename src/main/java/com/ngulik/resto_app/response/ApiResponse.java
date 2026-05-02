@@ -52,5 +52,4 @@ public class ApiResponse<T> {
                 .data(data)
                 .build();
     }
-
 }
