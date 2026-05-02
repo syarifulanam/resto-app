@@ -60,4 +60,10 @@ public class UserController {
         UserDto updateUser = userService.updateUser(id, updateRequest);
         return ResponseEntity.ok(ApiResponse.success("User updated successfully", updateUser));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok(ApiResponse.success("User deleted successfully", null));
+    }
 }

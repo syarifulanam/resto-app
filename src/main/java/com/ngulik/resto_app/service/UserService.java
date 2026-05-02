@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -167,5 +169,26 @@ public class UserService {
                 .role(savedUser.getRole())
                 .status(savedUser.getStatus())
                 .build();
+    }
+
+    // DELETE User (Soft Delete)
+    @Transactional
+    public void deleteUser(Long id) {
+        log.info("Soft deleting user with id: {}", id);
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        // Cek apakah sudah di delete sebelumnya
+        if (user.getDeletedAt() != null) {
+            throw new RuntimeException("User already deleted");
+        }
+
+        // Soft Delete: set deleteAt dengan waktu sekarang
+        user.setDeletedAt(LocalDateTime.now());
+
+        userRepository.save(user);
+
+        log.info("User with id: {} has been soft deleted", id);
     }
 }
