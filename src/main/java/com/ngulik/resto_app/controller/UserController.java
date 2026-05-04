@@ -55,7 +55,7 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("User found successfully", user));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<UserDto>> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDto updateRequest) {
         UserDto updateUser = userService.updateUser(id, updateRequest);
         return ResponseEntity.ok(ApiResponse.success("User updated successfully", updateUser));

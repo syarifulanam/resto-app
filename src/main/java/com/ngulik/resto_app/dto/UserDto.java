@@ -1,5 +1,6 @@
 package com.ngulik.resto_app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ngulik.resto_app.enums.UserRole;
 import com.ngulik.resto_app.enums.UserStatus;
 import jakarta.validation.constraints.Email;
@@ -26,6 +27,7 @@ public class UserDto {
     @NotBlank(message = "Email is required")
     private String email;
 
+    @JsonIgnore
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
